@@ -120,63 +120,64 @@ public class DispatcherHelper {
 				
 				Object value = null;
 				if( ClassType.List.value.equals(typeName) ){
-					
 					value = ParamHelper.convert2List(name, translator, parameterizedType);
-					
-				}else if( ClassType.Set.value.equals(typeName) ){
-					
+				}
+				else if( ClassType.Set.value.equals(typeName) ){	
 					value = ParamHelper.convert2Set(name,translator,parameterizedType);
-					
-				}else if( ClassType.String.value.equals(typeName) ){
-					
+				}
+				else if( ClassType.String.value.equals(typeName) ){	
 					value = ParamHelper.convert2String(name, translator);
-					
-				}else if( ClassType.StringArray.value.equals(typeName) ){
-					
+				}
+				else if( ClassType.StringArray.value.equals(typeName) ){	
 					value = ParamHelper.convert2StringArray(name, translator);
-					
-				}else if( ClassType.ShortBase.value.equals(typeName) ){
-					
-					
-					
-				}else if( ClassType.ShortBaseArray.value.equals(typeName) ){	
-				
-				}else if( ClassType.Short.value.equals(typeName) ){
-					
-				}else if( ClassType.ShortArray.value.equals(typeName) ){
-					
-				}else if( ClassType.IntBase.value.equals(typeName) ){
-					
-					value = ParamHelper.convert2Int(name, translator);
-					
-				}else if( ClassType.IntBaseArray.equals(typeName) ){
-					
-					value = ParamHelper.convert2IntArray(name, translator);
-					
-				}else if( ClassType.Integer.value.equals(typeName) ){
-					
-					value = ParamHelper.convert2Integer(name, translator);
-					
-				}else if( ClassType.IntegerArray.value.equals(typeName) ){	
-				
-					value = ParamHelper.convert2IntegerArray(name, translator);
-					
-				}else if( ClassType.FloatBase.value.equals(typeName) ){
-					
-				}else if( ClassType.FloatBaseArray.equals(typeName) ){
-					
-				}else if( ClassType.Float.value.equals(typeName) ){					
-				
-				}else if( ClassType.FloatArray.value.equals(typeName) ){
-					
-				}else if( ClassType.DoubleBase.value.equals(typeName) ){
-					
-				}else if( ClassType.DoubleBaseArray.value.equals(typeName) ){
-					
-				}else if( ClassType.Double.value.equals(typeName) ){
-					
-				}else if( ClassType.DoubleArray.value.equals(typeName) ){
-					
+				}
+				else if( ClassType.ShortBase.value.equals(typeName) ){	
+					value = ParamHelper.convert2ShortBase(name,translator);
+				}
+				else if( ClassType.ShortBaseArray.value.equals(typeName) ){		
+					value = ParamHelper.convert2ShortBaseArray(name,translator);					
+				}
+				else if( ClassType.Short.value.equals(typeName) ){					
+					value = ParamHelper.convert2Short(name,translator);					
+				}
+				else if( ClassType.ShortArray.value.equals(typeName) ){					
+					value = ParamHelper.convert2ShortArray(name,translator);					
+				}
+				else if( ClassType.IntBase.value.equals(typeName) ){					
+					value = ParamHelper.convert2Int(name, translator);					
+				}
+				else if( ClassType.IntBaseArray.equals(typeName) ){					
+					value = ParamHelper.convert2IntArray(name, translator);					
+				}
+				else if( ClassType.Integer.value.equals(typeName) ){					
+					value = ParamHelper.convert2Integer(name, translator);					
+				}
+				else if( ClassType.IntegerArray.value.equals(typeName) ){					
+					value = ParamHelper.convert2IntegerArray(name, translator);					
+				}
+				else if( ClassType.FloatBase.value.equals(typeName) ){
+					value = ParamHelper.convert2FloatBase(name, translator);
+				}
+				else if( ClassType.FloatBaseArray.equals(typeName) ){
+					value = ParamHelper.convert2FloatBaseArray(name, translator);
+				}
+				else if( ClassType.Float.value.equals(typeName) ){					
+					value = ParamHelper.convert2Float(name, translator);
+				}
+				else if( ClassType.FloatArray.value.equals(typeName) ){
+					value = ParamHelper.convert2FloatArray(name, translator);
+				}
+				else if( ClassType.DoubleBase.value.equals(typeName) ){
+					value = ParamHelper.convert2DoubleBase(name, translator);
+				}
+				else if( ClassType.DoubleBaseArray.value.equals(typeName) ){
+					value = ParamHelper.convert2DoubleBaseArray(name, translator);
+				}
+				else if( ClassType.Double.value.equals(typeName) ){
+					value = ParamHelper.convert2Double(name, translator);
+				}
+				else if( ClassType.DoubleArray.value.equals(typeName) ){
+					value = ParamHelper.convert2DoubleArray(name, translator);
 				}	
 				
 				properties.put(name, value);

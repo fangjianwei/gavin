@@ -118,6 +118,47 @@ public class ParamHelper {
 		return values;
 	}
 	
+	public static short convert2ShortBase( String paramName, ServletTranslator translator ){
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return 0;
+		
+		return Short.parseShort(values[0]);
+	}
+	
+	public static short[] convert2ShortBaseArray( String paramName, ServletTranslator translator ){
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return null;
+		
+		short[] returnShort = new short[values.length];
+		
+		for(int i=0;i<values.length;i++){
+			String value = values[i];
+			returnShort[i] = Short.parseShort(value);
+		}
+		
+		return returnShort;
+	}
+	
+	public static Short convert2Short( String paramName, ServletTranslator translator ){
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return 0;
+		
+		return Short.parseShort(values[0]);
+	}
+	
+	public static Short[] convert2ShortArray( String paramName, ServletTranslator translator ){
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return null;
+		
+		Short[] returnShort = string2ShortArray(values);
+		
+		return returnShort;
+	}	
+	
 	public static int convert2Int( String paramName, ServletTranslator translator ){
 		String[] values = (String[]) translator.getParameters().get(paramName);
 		
@@ -144,7 +185,7 @@ public class ParamHelper {
 	public static Integer convert2Integer( String paramName, ServletTranslator translator ){
 		String[] values = (String[]) translator.getParameters().get(paramName);
 		
-		if( values==null||values.length==0 ) return 0;
+		if( values==null||values.length==0 ) return new Integer(0);
 		
 		return Integer.valueOf(values[0]);
 	}
@@ -154,13 +195,91 @@ public class ParamHelper {
 		
 		if( values==null||values.length==0 ) return null;
 		
-		Integer[] returnInteger = new Integer[values.length];
-		
-		for(int i=0;i<values.length;i++){
-			String value = values[i];
-			returnInteger[i] = Integer.valueOf(value);
-		}
+		Integer[] returnInteger = string2IntegerArray(values);
 		
 		return returnInteger;
 	}
+
+	public static float convert2FloatBase(String paramName,ServletTranslator translator) {
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return 0;
+		
+		return Float.valueOf(values[0]);
+	}
+
+	public static float[] convert2FloatBaseArray(String paramName,ServletTranslator translator) {
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return null;
+		
+		float[] returnFloat = new float[values.length];
+		
+		for(int i=0;i<values.length;i++){
+			String value = values[i];
+			returnFloat[i] = Float.valueOf(value);
+		}
+		
+		return returnFloat;
+	}
+	
+	public static Float convert2Float(String paramName,ServletTranslator translator) {
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return new Float(0);
+		
+		return Float.valueOf(values[0]);
+	}
+
+	public static Float[] convert2FloatArray(String paramName,ServletTranslator translator) {
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return null;
+		
+		Float[] returnFloat = string2FloatArray(values);
+		
+		return returnFloat;
+	}	
+	
+	public static double convert2DoubleBase(String paramName,ServletTranslator translator) {
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return new Double(0);
+		
+		return Double.valueOf(values[0]);
+	}
+
+	public static double[] convert2DoubleBaseArray(String paramName,ServletTranslator translator) {
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return null;
+		
+		double[] returnFloat = new double[values.length];
+		
+		for(int i=0;i<values.length;i++){
+			String value = values[i];
+			returnFloat[i] = Double.valueOf(value);
+		}
+		
+		return returnFloat;
+	}	
+	
+	public static Double convert2Double(String paramName,ServletTranslator translator) {
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return new Double(0);
+		
+		return Double.valueOf(values[0]);
+	}
+
+	public static Double[] convert2DoubleArray(String paramName,ServletTranslator translator) {
+		String[] values = (String[]) translator.getParameters().get(paramName);
+		
+		if( values==null||values.length==0 ) return null;
+		
+		Double[] returnFloat = string2DoubleArray(values);
+		
+		return returnFloat;
+	}
+	
 }
