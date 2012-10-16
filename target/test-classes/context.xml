@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beens>
+    <annotation />
+	<scan basepackage="org.sky.framework.common.utils" ></scan>
+	
+	<aop rule="update*" ></aop>
+	
+	<bean id="abc" class="org." scope="singe"></bean>
+	
+	<bean id="abc2" class="org.d" scope="singe">
+		<property name="userDao" value="userDaod"></property>
+	</bean>
+</beens>
