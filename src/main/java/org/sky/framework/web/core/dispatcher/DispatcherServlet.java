@@ -10,10 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.sky.framework.common.proxy.BeanFactory;
+import org.sky.framework.common.utils.logging.Logger;
+import org.sky.framework.common.utils.logging.LoggerFactory;
 import org.sky.framework.web.helper.DispatcherHelper;
 
 public class DispatcherServlet extends HttpServlet{
 
+	private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
+	
 	/***/
 	private static final long serialVersionUID = 1L;
 	
@@ -43,13 +47,14 @@ public class DispatcherServlet extends HttpServlet{
 		String contextPath = request.getContextPath();
 		Object[] paramterObjects = DispatcherHelper.convertMethodParam(parameterClasses,uri,contextPath);
 		
+		String result = "";
 		try {
 			
 			if( !method.isAccessible() ){
 				method.setAccessible(true);
 			}
 			
-			method.invoke(action,paramterObjects);
+			result = (String) method.invoke(action,paramterObjects);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -57,6 +62,8 @@ public class DispatcherServlet extends HttpServlet{
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
+		log.debug("servlet response url:"+result);
+		response.sendRedirect(result);
 		
     }
           
