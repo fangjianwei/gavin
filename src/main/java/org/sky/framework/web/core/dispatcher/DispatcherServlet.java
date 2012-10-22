@@ -1,6 +1,7 @@
 package org.sky.framework.web.core.dispatcher;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -9,9 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.sky.framework.common.enumeration.ResultType;
 import org.sky.framework.common.proxy.BeanFactory;
 import org.sky.framework.common.utils.logging.Logger;
 import org.sky.framework.common.utils.logging.LoggerFactory;
+import org.sky.framework.web.core.result.Result;
 import org.sky.framework.web.helper.DispatcherHelper;
 
 public class DispatcherServlet extends HttpServlet{
@@ -47,14 +50,20 @@ public class DispatcherServlet extends HttpServlet{
 		String contextPath = request.getContextPath();
 		Object[] paramterObjects = DispatcherHelper.convertMethodParam(parameterClasses,uri,contextPath);
 		
-		String result = "";
+		Class<?> returnType = method.getReturnType();
+		
+		if( !theMethodResultTypeIsCorrect(returnType) ){
+			throw new ServletException("the return type is not correct,it should be the Result.java or void");
+		}
+		
+		Object resultObj = null;
 		try {
 			
 			if( !method.isAccessible() ){
 				method.setAccessible(true);
-			}
+			};
 			
-			result = (String) method.invoke(action,paramterObjects);
+			resultObj = method.invoke(action,paramterObjects);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -62,9 +71,54 @@ public class DispatcherServlet extends HttpServlet{
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
-		log.debug("servlet response url:"+result);
-		response.sendRedirect(result);
 		
+		if("void".equals(returnType.getName())) return;
+		
+		if(resultObj==null) return;
+		
+		if( !(resultObj instanceof Result) ) return;
+		
+		Result result = (Result) resultObj;
+		
+		if( ResultType.outprint.getValue().equals(result.getResultType()) ){
+			outprint(request,response,result);
+		}else{
+			log.debug("servlet response url:"+result.getResult());
+			response.sendRedirect(result.getResult());
+		}
+
+    }
+    
+    private void outprint( HttpServletRequest request, HttpServletResponse response,Result result ){
+    	PrintWriter out = null;
+    	if( result.getCharacterEncoding()!=null ){
+    		response.setCharacterEncoding(result.getCharacterEncoding());
+    	}
+    	
+    	try {
+    		log.debug(result.getResult());
+    		
+			out = response.getWriter();
+			out.print(result.getResult());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+    }
+    
+    private boolean theMethodResultTypeIsCorrect( Class<?> returnClass ){
+    	
+		if("void".equals(returnClass.getName())) return true;
+    	
+		boolean resultTypeIsCorrect = false;
+		Class<?>[] interfaceClass = returnClass.getInterfaces();
+		for( Class<?> clazz:interfaceClass ){
+			if( clazz==Result.class ){
+				resultTypeIsCorrect = true;
+				break;
+			}
+		}
+		return resultTypeIsCorrect;
     }
           
 }

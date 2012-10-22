@@ -3,5 +3,7 @@ package org.sky.framework.web.core.result;
 public interface Result {
 	public String getResultType();
 	
-	public String getjumpURL();
+	public String getResult();
+	
+	public String getCharacterEncoding();
 }

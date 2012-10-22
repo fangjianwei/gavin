@@ -193,41 +193,40 @@ public class DispatcherHelper {
 	}
    
    public static Object[] convertMethodParam( Class<?>[] paramClasses,String uri,String contextPath ){
-   	Object[] methodParam = new Object[paramClasses.length];
+   		Object[] methodParam = new Object[paramClasses.length];
    	
-   	String[] restFullParams = DispatcherHelper.getRestFullParam(contextPath,uri);
+   		String[] restFullParams = DispatcherHelper.getRestFullParam(contextPath,uri);
    	    	
-   	if( restFullParams!=null&&restFullParams.length!=0 ){
-   		int restFullParamsLength = restFullParams.length;
-   		int classLength = paramClasses.length;
-   		for( int i=0;i<restFullParamsLength;i++){
-   			if(classLength<i){
-   				break;
-   			}
-   			
-   			String value = restFullParams[i];
-   			Class<?> clazz = paramClasses[i];
-   			String name = clazz.getName();
-   	
-   			if( "int".equals(name)||"java.lang.Integer".equals(name) ){
-   				methodParam[i] = Integer.parseInt(value);
-   			}else if("float".equals(name)||"java.lang.Float".equals(name)){
-   				methodParam[i] = Float.parseFloat(value);
-   			}else if("double".equals(name)||"java.lang.Double".equals(name)){
-   				methodParam[i] = Double.parseDouble(value);
-   			}else if( "java.lang.String".equals(name) ){
-   				methodParam[i] = value;
-   			}
+   		if( restFullParams!=null&&restFullParams.length!=0 ){
+	   		int restFullParamsLength = restFullParams.length;
+	   		int classLength = paramClasses.length;
+	   		for( int i=0;i<restFullParamsLength;i++){
+	   			if(classLength<i){
+	   				break;
+	   			}
+	   			
+	   			String value = restFullParams[i];
+	   			Class<?> clazz = paramClasses[i];
+	   			String name = clazz.getName();
+	   	
+	   			if( "int".equals(name)||"java.lang.Integer".equals(name) ){
+	   				methodParam[i] = Integer.parseInt(value);
+	   			}else if("float".equals(name)||"java.lang.Float".equals(name)){
+	   				methodParam[i] = Float.parseFloat(value);
+	   			}else if("double".equals(name)||"java.lang.Double".equals(name)){
+	   				methodParam[i] = Double.parseDouble(value);
+	   			}else if( "java.lang.String".equals(name) ){
+	   				methodParam[i] = value;
+	   			}
+	   		}
+	   		
+	   		if( restFullParamsLength<classLength ){
+	   			Class<?> beanClass = paramClasses[restFullParamsLength];
+	   			ServletTranslator translator = ServletTranslator.getTranslator();
+	   			methodParam[restFullParamsLength] = DispatcherHelper.setParamToBean(beanClass,translator);
+	   		}
    		}
-   		
-   		if( restFullParamsLength<classLength ){
-   			Class<?> beanClass = paramClasses[restFullParamsLength];
-   			ServletTranslator translator = ServletTranslator.getTranslator();
-   			methodParam[restFullParamsLength] = DispatcherHelper.setParamToBean(beanClass,translator);
-   		}
-   	}
-   	
-   	return methodParam;
+   		return methodParam;
    }
-	
+   
 }
