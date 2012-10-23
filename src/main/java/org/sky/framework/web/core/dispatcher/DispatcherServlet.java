@@ -26,10 +26,10 @@ public class DispatcherServlet extends HttpServlet{
 	
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String invokeMapping = DispatcherHelper.getInvokeMapping(request);
-		String[] resourcePaths = invokeMapping.split(".");
+		String[] resourcePaths = invokeMapping.split("\\.");
 		if( resourcePaths.length!=3 ){
 			//TODO redirect to error page
-			throw new ServletException("request error");
+			throw new ServletException("request error,resourcePaths.length="+resourcePaths.length);
 		}
 		
 		String actionId = resourcePaths[0];
@@ -82,9 +82,12 @@ public class DispatcherServlet extends HttpServlet{
 		
 		if( ResultType.outprint.getValue().equals(result.getResultType()) ){
 			outprint(request,response,result);
-		}else{
-			log.debug("servlet response url:"+result.getResult());
+		}else if( ResultType.redirect.getValue().equals(result.getResultType()) ){
+			log.debug("servlet response redirect url:"+result.getResult());
 			response.sendRedirect(result.getResult());
+		}else if( ResultType.forward.getValue().equals(result.getResultType()) ){
+			log.debug("servlet response forward url:"+result.getResult());
+			request.getRequestDispatcher(result.getResult()).forward(request, response);
 		}
 
     }
@@ -107,13 +110,19 @@ public class DispatcherServlet extends HttpServlet{
     }
     
     private boolean theMethodResultTypeIsCorrect( Class<?> returnClass ){
+  
+    	String resultClassName = Result.class.getName();
+    	String returnClassName = returnClass.getName();
     	
-		if("void".equals(returnClass.getName())) return true;
-    	
+		if("void".equals(returnClassName)) return true;
+    	if( returnClass.isInterface()&&returnClassName.equals(resultClassName) ){
+    		return true;
+    	}
+		
 		boolean resultTypeIsCorrect = false;
 		Class<?>[] interfaceClass = returnClass.getInterfaces();
 		for( Class<?> clazz:interfaceClass ){
-			if( clazz==Result.class ){
+			if( clazz.getName().equals(resultClassName) ){
 				resultTypeIsCorrect = true;
 				break;
 			}
