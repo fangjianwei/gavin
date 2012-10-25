@@ -3,6 +3,8 @@ package org.sky.framework.web.core.result;
 import org.sky.framework.common.enumeration.ResultType;
 
 public class ForwardResult implements Result{
+	
+	private static final String utf8 = "utf-8";
 
 	private String jumpURL;
 	
@@ -11,7 +13,7 @@ public class ForwardResult implements Result{
 	}
 	
 	public String getCharacterEncoding() {
-		return "utf-8";
+		return utf8;
 	}
 
 	public String getResult() {
