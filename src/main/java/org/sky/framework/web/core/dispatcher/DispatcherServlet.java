@@ -109,6 +109,11 @@ public class DispatcherServlet extends HttpServlet{
 		
     }
     
+    /**
+     * To validate the result class type whether it is appropriate for the ruquirement.
+     * @param returnClass
+     * @return
+     */
     private boolean theMethodResultTypeIsCorrect( Class<?> returnClass ){
   
     	String resultClassName = Result.class.getName();
