@@ -11,11 +11,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.TestCase;
-
 import org.junit.Before;
 import org.junit.Test;
-public class DispatcherServletTest extends TestCase{
+public class DispatcherServletTest{
 	
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -111,4 +109,5 @@ public class DispatcherServletTest extends TestCase{
 		se.service(request, response);
 
 	}
+	
 }

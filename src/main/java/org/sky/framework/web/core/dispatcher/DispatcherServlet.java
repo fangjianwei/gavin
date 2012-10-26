@@ -110,7 +110,7 @@ public class DispatcherServlet extends HttpServlet{
     }
     
     /**
-     * To validate the result class type whether it is appropriate for the ruquirement.
+     * To validate the result class type whether it is appropriate for the requirement.
      * @param returnClass
      * @return
      */
