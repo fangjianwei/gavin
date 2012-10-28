@@ -181,18 +181,18 @@ public class GavinBeanToXml {
 	 * @param map the map
 	 * @return the String
 	 */
-	private static String parseMap( String name, Map map ){
+	private static String parseMap( String name, Map<?,?> map ){
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append( "<" ).append( name ).append( ">" );
 		
 		if ( map!=null && !map.isEmpty() ) {
 			String xmlPart = null;
-			Entry entry = null;
+			Entry<?,?> entry = null;
 			Object key = null;
 			Object value = null;
 			for ( Object o : map.entrySet() ) {
-				entry = (Entry) o;
+				entry = (Entry<?,?>) o;
 				key = entry.getKey();
 				value = entry.getValue();
 				xmlPart = "<entry>";

@@ -25,6 +25,22 @@ public class DispatcherServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	Result result = dispatcherService(request, response);
+    	
+    	if( result==null ) return;
+    	
+		if( ResultType.outprint.getValue().equals(result.getResultType()) ){
+			outprint(request,response,result);
+		}else if( ResultType.redirect.getValue().equals(result.getResultType()) ){
+			log.debug("servlet response redirect url:"+result.getResult());
+			response.sendRedirect(result.getResult());
+		}else if( ResultType.forward.getValue().equals(result.getResultType()) ){
+			log.debug("servlet response forward url:"+result.getResult());
+			request.getRequestDispatcher(result.getResult()).forward(request, response);
+		}
+    }
+    
+    protected Result dispatcherService(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String invokeMapping = DispatcherHelper.getInvokeMapping(request);
 		String[] resourcePaths = invokeMapping.split("\\.");
 		if( resourcePaths.length!=3 ){
@@ -72,31 +88,27 @@ public class DispatcherServlet extends HttpServlet{
 			e.printStackTrace();
 		}
 		
-		if("void".equals(returnType.getName())) return;
+		if("void".equals(returnType.getName())) return null;
 		
-		if(resultObj==null) return;
+		if(resultObj==null) return null;
 		
-		if( !(resultObj instanceof Result) ) return;
+		if( !(resultObj instanceof Result) ) return null;
 		
-		Result result = (Result) resultObj;
-		
-		if( ResultType.outprint.getValue().equals(result.getResultType()) ){
-			outprint(request,response,result);
-		}else if( ResultType.redirect.getValue().equals(result.getResultType()) ){
-			log.debug("servlet response redirect url:"+result.getResult());
-			response.sendRedirect(result.getResult());
-		}else if( ResultType.forward.getValue().equals(result.getResultType()) ){
-			log.debug("servlet response forward url:"+result.getResult());
-			request.getRequestDispatcher(result.getResult()).forward(request, response);
-		}
-
-    }
+		return (Result) resultObj;
+    }    
     
     private void outprint( HttpServletRequest request, HttpServletResponse response,Result result ){
     	PrintWriter out = null;
-    	if( result.getCharacterEncoding()!=null ){
+    	if( result.getContentType()!=null&&!"".equals(result.getContentType()) ){
+    		String encoding = "utf-8";
+    		if(  result.getCharacterEncoding()!=null  ){
+    			encoding = result.getCharacterEncoding();
+    		}
+    		response.setContentType(result.getContentType()+";charset="+encoding);
+    	}else if( result.getCharacterEncoding()!=null ){
     		response.setCharacterEncoding(result.getCharacterEncoding());
     	}
+    	
     	
     	try {
     		log.debug(result.getResult());

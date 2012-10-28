@@ -5,6 +5,8 @@ import org.sky.framework.common.utils.GavinBeanToXml;
 
 public class XMLResult implements Result{
 	
+	private static final String defaultEncoding = "utf-8";
+	
 	private Object bean;
 	
 	private String encoding;
@@ -23,7 +25,14 @@ public class XMLResult implements Result{
 	}
 
 	public String getCharacterEncoding() {
-		return this.encoding;
-	}
+		String characterEncoding = defaultEncoding;
+		if( encoding!=null&&!"".equals(encoding) ){
+			characterEncoding = encoding;
+		}
+		return characterEncoding;
+	}	
 
+	public String getContentType() {
+		return "text/xml";
+	}
 }

@@ -4,9 +4,12 @@ import org.sky.framework.common.enumeration.ResultType;
 
 public class RedirectResult implements Result{
 
-	private static final String utf8 = "utf-8";
+	private static final String defaultEncoding = "utf-8";
+	private static final String defaultContentType = "text/html";
 	
+	private String encoding;
 	private String jumpURL;
+	private String contentType;
 	
 	public RedirectResult( String jumpURL ){
 		this.jumpURL = jumpURL;
@@ -19,11 +22,21 @@ public class RedirectResult implements Result{
 	public String getResult() {
 		return this.jumpURL;
 	}
-
+	
 	public String getCharacterEncoding() {
-		return utf8;
+		String characterEncoding = defaultEncoding;
+		if( encoding!=null&&!"".equals(encoding) ){
+			characterEncoding = encoding;
+		}
+		return characterEncoding;
+	}	
+	
+	public String getContentType() {
+		String currentContentType = defaultContentType;
+		if( contentType!=null&&!"".equals(contentType) ){
+			currentContentType = this.contentType;
+		}
+		return currentContentType;
 	}
-	
-	
 
 }

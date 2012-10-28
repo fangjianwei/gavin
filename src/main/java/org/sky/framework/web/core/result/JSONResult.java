@@ -6,29 +6,46 @@ import com.google.gson.Gson;
 
 public class JSONResult implements Result{
 	
+	private static final String defaultEncoding = "utf-8";
+	
+	private String encoding;
+	private Object obj;
+	private String rootName;
+	
 	public JSONResult( Object obj,String encoding ){
 		this.obj = obj;
-		this.characterEncoding = encoding;
+		this.encoding = encoding;
 	}
-
-	private String characterEncoding;
-	private Object obj;
+	
+	public JSONResult( Object obj,String encoding ,String rootName){
+		this.obj = obj;
+		this.encoding = encoding;
+		this.rootName = rootName;
+	}
 	
 	public String getCharacterEncoding() {
-		return this.characterEncoding;
-	}
+		String characterEncoding = defaultEncoding;
+		if( encoding!=null&&!"".equals(encoding) ){
+			characterEncoding = encoding;
+		}
+		return characterEncoding;
+	}	
 
 	public String getResult() {
 		Gson gson = new Gson();
-		return gson.toJson(obj);
+		String json = gson.toJson(obj);
+		if( this.rootName!=null&&"".equals(this.rootName) ){
+			json = "{\"" + this.rootName + "\":" + json + "}";
+		}
+		return json; 
 	}
 
 	public String getResultType() {
 		return ResultType.outprint.getValue();
 	}
-
-	public void setCharacterEncoding( String encoding ){
-		this.characterEncoding = encoding;
+	
+	public String getContentType(){
+		return "application/json";
 	}
 	
 }

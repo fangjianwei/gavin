@@ -6,4 +6,6 @@ public interface Result {
 	public String getResult();
 	
 	public String getCharacterEncoding();
+	
+	public String getContentType();
 }

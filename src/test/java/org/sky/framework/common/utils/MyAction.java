@@ -9,9 +9,11 @@ import org.sky.framework.common.annotation.Scope;
 import org.sky.framework.common.utils.logging.Logger;
 import org.sky.framework.common.utils.logging.LoggerFactory;
 import org.sky.framework.web.core.dispatcher.DispatcherServlet;
+import org.sky.framework.web.core.result.ForwardResult;
 import org.sky.framework.web.core.result.JSONResult;
 import org.sky.framework.web.core.result.RedirectResult;
 import org.sky.framework.web.core.result.Result;
+import org.sky.framework.web.core.result.XMLResult;
 
 @Controller("ddd")
 @Scope("prototype")
@@ -76,11 +78,16 @@ public class MyAction {
     
     public Result forward(String a,int b){
     	System.out.println("================MyAction.forward(String a,int b),a="+a+",b="+b);
-    	return new RedirectResult("/test.jsp");
+    	return new ForwardResult("/test.jsp");
     }
     
     public Result jsonOutprint(String a,int b, TestBean bean ){
     	log.info("================MyAction.jsonOutprint(String a,int b,TestBean bean),a="+a+",b="+b+","+bean.toString());
     	return new JSONResult(bean,"utf-8");
+    }
+    
+    public Result xmlOutprint(String a,int b, TestBean bean ){
+    	log.info("================MyAction.xmlOutprint(String a,int b,TestBean bean),a="+a+",b="+b+","+bean.toString());
+    	return new XMLResult(bean,"utf-8");
     }
 }
