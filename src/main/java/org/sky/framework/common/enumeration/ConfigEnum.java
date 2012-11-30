@@ -12,7 +12,17 @@ public enum ConfigEnum {
 	propertyType("type"),
 	
 	aop("aop"),
-	aopRule("rule"),
+	aopId("id"),
+	aopRef("ref"),
+	
+	aopPointcut("pointcut"),
+	aopPointcutId("id"),
+	sopPointcutExpression("expression"),
+	
+	aopPointcutReqBefore("before"),
+	aopPointcutReqAfter("after"),
+	aopPointcutReqMethod("method"),
+	aopPointcutReqRef("pointcutref"),
 	
 	annotation("annotation"),
 	scan("scan"),

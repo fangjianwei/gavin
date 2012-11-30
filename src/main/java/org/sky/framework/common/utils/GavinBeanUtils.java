@@ -1,7 +1,10 @@
 package org.sky.framework.common.utils;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import org.sky.framework.common.enumeration.ClassType;
 
 public class GavinBeanUtils {
 
@@ -47,9 +50,153 @@ public class GavinBeanUtils {
 			return false;
 		}
 	}
+	
+	public static boolean isString( String className ){
+		if( ClassType.String.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isInt( String className ){
+		if( ClassType.IntBase.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isInteger( String className ){
+		if( ClassType.Integer.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isLongBase( String className ){
+		if( ClassType.LongBase.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isLong( String className ){
+		if( ClassType.Long.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isFloatBase( String className ){
+		if( ClassType.LongBase.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isFloat( String className ){
+		if( ClassType.Long.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}	
+	
+	public static boolean isDoubleBase(String className) {
+		if( ClassType.DoubleBase.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isDouble(String className) {
+		if( ClassType.Double.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isByteBase(String className) {
+		if( ClassType.ByteBase.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isByte(String className) {
+		if( ClassType.Byte.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isShortBase(String className) {
+		if( ClassType.ShortBase.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isShort(String className) {
+		if( ClassType.Short.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}	
+	
+	public static boolean isBooleanBase(String className) {
+		if( ClassType.BooleanBase.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean isBoolean(String className) {
+		if( ClassType.Boolean.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}	
+	
+	public static boolean isBigDecimal( String className ){
+		if( "java.math.BigDecimal".equals(className) ){
+			return true;
+		}else{
+			return false;
+		}	
+	}
 
+	public static boolean isByteBaseArray(String className) {
+		if( ClassType.ByteBaseArray.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public static boolean isByteArray(String className) {
+		if( ClassType.ByteArray.value.equals(className) ){
+			return true;
+		}else{
+			return false;
+		}
+	}	
+	
 	public static boolean isList(Class<?> clazz) {
-		if ( "java.util.List".equals(clazz.getName()) ) {
+		if ( ClassType.List.value.equals(clazz.getName()) ) {
 			return true;
 		}
 		
@@ -57,7 +204,7 @@ public class GavinBeanUtils {
 		if ( interfaces==null || interfaces.length==0 ) return false;
 		
 		for ( Class<?> c : interfaces ) {
-			if ( "java.util.List".equals(c.getName()) ) {
+			if ( ClassType.List.value.equals(c.getName()) ) {
 				return true;
 			}
 		}
@@ -66,7 +213,7 @@ public class GavinBeanUtils {
 	}
 
 	public static boolean isMap(Class<?> clazz) {
-		if ( "java.util.Map".equals(clazz.getName()) ) {
+		if ( ClassType.Map.value.equals(clazz.getName()) ) {
 			return true;
 		}
 
@@ -74,7 +221,7 @@ public class GavinBeanUtils {
 		if ( interfaces==null || interfaces.length==0 ) return false;
 		
 		for ( Class<?> c : interfaces ) {
-			if ( "java.util.Map".equals(c.getName()) ) {
+			if ( ClassType.Map.value.equals(c.getName()) ) {
 				return true;
 			}
 		}
@@ -87,5 +234,21 @@ public class GavinBeanUtils {
 		if ( className.startsWith("[") ) return true;
 		else return false;
 	}
+	
+    public static Method getMethodByName( String methodName,Class<?> targetClass ){
+		Method[] methods = targetClass.getDeclaredMethods();
+		if( methods==null||methods.length==0){
+			return null;
+		}
+		
+		Method method = null;
+		for( Method m:methods ){
+			if( m.getName().equals(methodName)){
+				method = m;
+				break;
+			}
+		}
+		return method;
+    }
 
 }

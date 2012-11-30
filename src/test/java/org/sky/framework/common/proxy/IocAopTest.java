@@ -1,5 +1,7 @@
 package org.sky.framework.common.proxy;
 
+import java.lang.reflect.Proxy;
+
 import junit.framework.TestCase;
 
 import org.sky.framework.common.utils.IService;
@@ -14,8 +16,8 @@ public class IocAopTest extends TestCase{
 		service.what();
 		IService service2 = (IService) BeanFactory.getBean("ServiceImple");
 		service2.what();
-		assertEquals(true,service.hashCode()==service2.hashCode());
-		
+
+		assertEquals(true,Proxy.getInvocationHandler(service).hashCode()==Proxy.getInvocationHandler(service2).hashCode());
 		
 		ServiceTest serviceTest = (ServiceTest)BeanFactory.getBean("ser");
 		serviceTest.sayHello();
@@ -25,8 +27,6 @@ public class IocAopTest extends TestCase{
 		MyAction myAction2 = (MyAction) BeanFactory.getControlledBean("ddd");
 		
 		assertEquals(false,myAction.hashCode()==myAction2.hashCode());
-
-		System.out.println(myAction.hashCode()+","+myAction2.hashCode());
 		
 		myAction.hello();
 	}

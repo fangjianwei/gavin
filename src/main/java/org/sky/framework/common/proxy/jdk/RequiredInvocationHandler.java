@@ -4,7 +4,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Set;
 
+import org.sky.framework.aop.AOPExecuator;
 import org.sky.framework.common.config.Aop;
+import org.sky.framework.common.enumeration.ConfigEnum;
 
 public class RequiredInvocationHandler implements InvocationHandler{
 	
@@ -19,10 +21,9 @@ public class RequiredInvocationHandler implements InvocationHandler{
 
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		
-		//TODO aop
-		
+		AOPExecuator.execute(method.getDeclaringClass(), aops,ConfigEnum.aopPointcutReqBefore.getValue());
 		method.invoke(target, args);
-		
+		AOPExecuator.execute(method.getDeclaringClass(), aops,ConfigEnum.aopPointcutReqAfter.getValue());
 		
 		return null;
 	}

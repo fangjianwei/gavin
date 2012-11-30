@@ -12,7 +12,7 @@ public class CglibProxy extends GavinProxy{
 	private Enhancer enhancer = new Enhancer(); 
 	
 	@Override
-	protected Object getProxy(Class<?> target,Set<Aop> aops) {
+	protected Object getProxy(Class target,Set aops) {
 		enhancer.setSuperclass(target);
 		enhancer.setCallback(new CglibInterceptor(aops));
 		return enhancer.create();

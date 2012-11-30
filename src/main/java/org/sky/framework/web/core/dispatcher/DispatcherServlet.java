@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.sky.framework.common.enumeration.ResultType;
 import org.sky.framework.common.proxy.BeanFactory;
+import org.sky.framework.common.utils.GavinBeanUtils;
 import org.sky.framework.common.utils.logging.Logger;
 import org.sky.framework.common.utils.logging.LoggerFactory;
 import org.sky.framework.web.core.result.Result;
@@ -53,7 +54,7 @@ public class DispatcherServlet extends HttpServlet{
 		
 		Object action = BeanFactory.getControlledBean(actionId);
 		
-		Method method = DispatcherHelper.getMethodByName(methodName, action.getClass());
+		Method method = GavinBeanUtils.getMethodByName(methodName, action.getClass());
 		if( method==null ){
 			//TODO redirect to error page
 			throw new ServletException("request error,can not find '" + methodName + "' method in '" + actionId + "' servlet");

@@ -1,6 +1,5 @@
 package org.sky.framework.web.helper;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,11 +23,6 @@ public class DisppatcherHelperTest extends TestCase{
     	invokeM = DispatcherHelper.getInvokeMapping(contextPath, uri);
     	
     	assertEquals("login.jsp.do", invokeM);
-	}
-	
-	public void testGetMethodByName(){
-		Method method= DispatcherHelper.getMethodByName("getMethodByName", DispatcherHelper.class);
-		assertNotNull(method);
 	}
 	
 	public void testGetRestFullParam(){

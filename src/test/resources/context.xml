@@ -4,7 +4,11 @@
     <annotation />
 	<scan basepackage="org.sky.framework.common.utils" ></scan>
 	
-	<aop rule="update*" ></aop>
+	<aop id="test1" ref="abc2">
+		<pointcut id="first" expression="update*" />
+		<before method="ttt" pointcutref="first"  />
+		<after method="ttt2" pointcutref="first"  />
+	</aop>
 	
 	<bean id="abc" class="org." scope="singe"></bean>
 	

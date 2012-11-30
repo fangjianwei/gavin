@@ -17,6 +17,8 @@ import org.sky.framework.common.annotation.Inject;
 import org.sky.framework.common.annotation.Repository;
 import org.sky.framework.common.annotation.Scope;
 import org.sky.framework.common.annotation.Service;
+import org.sky.framework.common.config.Aop.AOPPointCut;
+import org.sky.framework.common.config.Aop.AOPPointCutRequest;
 import org.sky.framework.common.enumeration.AnnotationEnum;
 import org.sky.framework.common.enumeration.ConfigEnum;
 import org.sky.framework.common.enumeration.InjectEnum;
@@ -122,9 +124,29 @@ public class ConfigUtil {
 		configuration.addBean(bean);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void aopConvert( Element ele ){
-		// TODO aop imple
 		Aop aop = new Aop();
+		aop.setId(ele.attributeValue(ConfigEnum.aopId.getValue()));
+		aop.setRef(ele.attributeValue(ConfigEnum.aopRef.getValue()));
+		
+		List<Element> propertyEles = ele.elements();
+		if(propertyEles==null) return;
+		
+		for( Element propertyEle:propertyEles ){
+			if( ConfigEnum.aopPointcut.getValue().equals(propertyEle.getName())){
+				AOPPointCut pointcut = aop.createPointcut();
+				pointcut.setId(propertyEle.attributeValue(ConfigEnum.aopPointcutId.getValue()));
+				pointcut.setExpression(propertyEle.attributeValue(ConfigEnum.sopPointcutExpression.getValue()));
+				aop.addPointcut(pointcut);
+			}else{
+				AOPPointCutRequest pointcutReq = aop.createAOPPointCutRequest();
+				pointcutReq.setRequest(propertyEle.getName());
+				pointcutReq.setMethod(propertyEle.attributeValue(ConfigEnum.aopPointcutReqMethod.getValue()));
+				pointcutReq.setPointcutref(propertyEle.attributeValue(ConfigEnum.aopPointcutReqRef.getValue()));
+				aop.addPointcutRequest(propertyEle.getName(), pointcutReq);
+			}
+		}	
 		configuration.addAop(aop);
 	}
 	

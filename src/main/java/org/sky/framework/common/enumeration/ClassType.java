@@ -37,7 +37,27 @@ public enum ClassType {
 	
 	List("java.util.List"),
 	
-	Set("java.util.Set");
+	Map("java.lang.Map"),
+	
+	Set("java.util.Set"), 
+	
+	ByteBase("byte"),
+	ByteBaseArray("[B"),
+	
+	Byte("java.lang.Byte"),
+	ByteArray("[Ljava.lang.Byte;"),
+	
+	BooleanBase("boolean"),
+	BooleanBaseArray("[Z"),
+	
+	Boolean("java.lang.Boolean"),
+	BooleanArray("[Ljava.lang.Boolean;"),
+	
+	CharBase("char"),
+	CharBaseArray("[C"),
+	
+	CharacterArray("[Ljava.lang.Character;")
+	;
 	
 	public final String value;
 	

@@ -56,22 +56,6 @@ public class DispatcherHelper {
 		return uri;
     }
     
-    public static Method getMethodByName( String methodName,Class<?> targetClass ){
-		Method[] methods = targetClass.getDeclaredMethods();
-		if( methods==null||methods.length==0){
-			return null;
-		}
-		
-		Method method = null;
-		for( Method m:methods ){
-			if( m.getName().equals(methodName)){
-				method = m;
-				break;
-			}
-		}
-		return method;
-    }
-    
 	public static String[] getRestFullParam( String contextPath,String uri ){
     	if( StringUtils.isNotBlank(contextPath) ){
     		uri = uri.replace(contextPath, "");
@@ -96,7 +80,6 @@ public class DispatcherHelper {
 	}
 	
    public static Object setParamToBean(Class<?> beanClass, ServletTranslator translator) {
-		// TODO Auto-generated method stub
 	   	Object bean = null;
     	try {
     		String beanPackage = ClassUtils.getPackageName(beanClass);
