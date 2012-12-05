@@ -9,27 +9,127 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.sky.framework.common.utils.GavinBeanUtils;
+import org.sky.framework.dao.annotation.Column;
+import org.sky.framework.dao.annotation.Id;
+import org.sky.framework.dao.annotation.Ref;
+import org.sky.framework.dao.annotation.Table;
+import org.sky.framework.dao.annotation.Transient;
+import org.sky.framework.dao.dto.Col;
+import org.sky.framework.dao.dto.DBMapping;
+import org.sky.framework.dao.dto.PrimaryKey;
+import org.sky.framework.dao.dto.RefDB;
 
 public class DBHelper {
 	
 //	public static void ObjectToDBColumn( Object obj ){
 //		
 //	}
-	
-	public static DBMapping combination( Class<?> clazz ){
-		//TODO auto combination
+	/**
+	 * 根据annotation提取数据库映射信息。
+	 * @param clazz
+	 * @return
+	 * @throws Exception 
+	 */
+	public static DBMapping combinationDBMapping( Class<?> clazz ) throws Exception{
 		DBMapping mapping = new DBMapping();
 
 		Field[] fields = clazz.getDeclaredFields();
 		if(fields==null||fields.length==0) return mapping; 
 		
+		String tablename = clazz.getSimpleName();;
+		Table table = clazz.getAnnotation(Table.class);
+		if( table!=null&&!"".equals(table.value().trim()) ){
+			tablename = table.value().trim();
+		}
+		
+		mapping.setTableName(tablename);
+		
 		for( Field field:fields ){
+			String fieldName = field.getName();
+			Transient trans = field.getAnnotation(Transient.class);
+			Id idAnnotation = field.getAnnotation(Id.class);
+			Column columnAnnotation = field.getAnnotation(Column.class);
+			Ref refDBAnnotation = field.getAnnotation(Ref.class);
 			
+			String transientValue = trans(trans);
+			if( trans!=null&&"".equals(transientValue) ) continue;
+			
+			Col col = column(columnAnnotation);
+
+			if( col==null ){
+				col = new Col();
+				col.setName( fieldName );
+			}
+			
+			PrimaryKey primaryKey = id(idAnnotation);
+			if( primaryKey!=null ){
+				primaryKey.setName(col.getName());
+				mapping.addPrimaryKey(fieldName,primaryKey);
+			}
+			
+			RefDB refDB = refDB(refDBAnnotation);
+			col.setRefDB(refDB);
+
+			col.setTransientValue(transientValue);
+			
+			mapping.addColumn(fieldName,col);
+			
+		}
+		
+		if( !mapping.validate() ){
+			throw new Exception("类的annotation错误！");
 		}
 		
 		return mapping;
 	}
 	
+	private static String trans( Transient trans ){
+		if(trans==null) return "";
+		
+		String transientValue = trans.value();
+		return transientValue;
+	}
+	
+	private static PrimaryKey id( Id idAnnotation ){
+		if( idAnnotation==null ) return null;
+		String type = idAnnotation.type();
+		Class<?> clazz = idAnnotation.clazz();
+		
+		PrimaryKey primaryKey = new PrimaryKey();
+		primaryKey.setType(type);
+		primaryKey.setClazz(clazz);
+		return primaryKey;
+	}
+	
+	private static Col column( Column columnAnnotation ){
+		if(columnAnnotation==null) return null;
+		
+		Col col = null;
+		
+		String name = columnAnnotation.value();
+		if( !"".equals(name) ){
+			col = new Col();
+			col.setName(name);
+		}
+		
+		return col;
+	}
+	
+	private static RefDB refDB( Ref refDBAnnotation ){
+		if( refDBAnnotation==null ) return null;
+		String refName = refDBAnnotation.refName();
+		String[] refKey = refDBAnnotation.refKey();
+		String[] targetKey = refDBAnnotation.targetKey();
+		String otherConditions = refDBAnnotation.otherConditions();
+		
+		RefDB refdb = new RefDB();
+		refdb.setRefKey(refKey);
+		refdb.setTargetKey(targetKey);
+		refdb.setRefName(refName);
+		refdb.setOtherConditions(otherConditions);
+		
+		return refdb;
+	}
 	
 	public static void setPreparedStatementValue( PreparedStatement ps,Object[] params ) throws SQLException{
 		if( params==null||params.length==0 ) return;

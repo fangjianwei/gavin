@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.sky.framework.common.dto.PageFilter;
+import org.sky.framework.dao.dto.DBMapping;
+import org.sky.framework.dao.dto.PrimaryKey;
 import org.sky.framework.dao.utils.DBHelper;
 import org.sky.framework.dao.utils.DBManager;
 
@@ -14,21 +17,17 @@ import org.sky.framework.dao.utils.DBManager;
 public class BasicTemplateDao implements BasicDao{
 
 	public void deleteById(Object id,Class clazz) throws Exception {
-		// TODO Auto-generated method stub
+
 		Connection conn = null;
-		PreparedStatement ps = null;
-		try{
+		try{					
 			conn = DBManager.getInstance().getPrimaryConnection();
-			String sql = "delete from xxx where xx=?";
-			ps = conn.prepareStatement(sql);
-			DBHelper.setPreparedStatementValue(ps, new Object[]{id});
-			ps.executeUpdate();
+			this.deleteById(conn, id,clazz);
 			conn.commit();
 		}catch( Exception e ){
 			DBHelper.rollback(conn);
 			throw e;
 		}finally{
-			DBHelper.close(conn,ps);
+			DBHelper.close(conn);
 		}
 		
 	}
@@ -39,7 +38,33 @@ public class BasicTemplateDao implements BasicDao{
 	}
 
 	public void deleteById(Connection conn, Object id,Class clazz) throws Exception {
-		// TODO Auto-generated method stub
+		DBMapping dbmapping = DBHelper.combinationDBMapping(clazz);
+		Map<String,PrimaryKey> primaryKeys = dbmapping.getPrimaryKeys();
+		if( primaryKeys.isEmpty()||primaryKeys.size()==0 ){
+			throw new Exception("缺少主键");
+		}
+		
+		if( primaryKeys.size()>1 ){
+			throw new Exception("该方法只支持一个主键！");
+		}
+		
+		PrimaryKey primaryKey = null;
+		for( Entry<String, PrimaryKey> entry:primaryKeys.entrySet() ){
+			primaryKey = entry.getValue();
+		}
+		
+		PreparedStatement ps = null;
+		try{					
+			String primaryName = primaryKey.getName();
+			String sql = "delete from " + dbmapping.getTableName().toLowerCase() + " where " + primaryName + "=?";
+			ps = conn.prepareStatement(sql);
+			DBHelper.setPreparedStatementValue(ps, new Object[]{id});
+			ps.executeUpdate();
+		}catch( Exception e ){
+			throw e;
+		}finally{
+			DBHelper.close(ps);
+		}
 		
 	}
 

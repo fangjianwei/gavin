@@ -5,8 +5,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Table {
-	public String value() default "";
+public @interface Ref {
+	
+	public String refName();
+	
+	public String[] refKey();
+	
+	public String[] targetKey();
+
+	public String otherConditions() default "";
 }
